@@ -58,7 +58,7 @@ class _SignInPageState extends State<SignInPage> {
               hintText: "juandelacruz09@gmail.com"),
           onSaved: (value) => setState(() => email = value),
           validator: (value) {
-            if (value == null || value.isEmpty) {
+            if (value == null || value.isEmpty || !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value)) {
               return "Please enter your email";
             }
             return null;
@@ -76,7 +76,7 @@ class _SignInPageState extends State<SignInPage> {
           obscureText: true,
           onSaved: (value) => setState(() => password = value),
           validator: (value) {
-            if (value == null || value.isEmpty) {
+            if (value == null || value.isEmpty || value.length<6) {
               return "Please enter your password";
             }
             return null;

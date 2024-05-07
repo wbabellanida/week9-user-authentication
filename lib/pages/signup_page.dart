@@ -13,6 +13,8 @@ class _SignUpState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
   String? email;
   String? password;
+  String? fname;
+  String? lname;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,7 @@ class _SignUpState extends State<SignUpPage> {
               key: _formKey,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [heading, emailField, passwordField, submitButton],
+                children: [heading, firstNameField, lastNameField, emailField, passwordField, submitButton],
               ),
             )),
       ),
@@ -49,13 +51,49 @@ class _SignUpState extends State<SignUpPage> {
               hintText: "Enter a valid email"),
           onSaved: (value) => setState(() => email = value),
           validator: (value) {
-            if (value == null || value.isEmpty) {
+            if (value == null || value.isEmpty || !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value)) {
               return "Please enter a valid email format";
             }
             return null;
           },
         ),
       );
+
+  Widget get firstNameField => Padding(
+    padding: const EdgeInsets.only(bottom: 30),
+    child: TextFormField(
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+        label: Text("First Name"),
+        hintText: "Enter your first name"
+      ),
+      onSaved: (value) => setState(() => fname = value ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return "Please enter your first name";
+        }
+        return null;
+      },
+    )
+  );
+
+  Widget get lastNameField => Padding(
+    padding: const EdgeInsets.only(bottom: 30),
+    child: TextFormField(
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+        label: Text("Last Name"),
+        hintText: "Enter your last name"
+      ),
+      onSaved: (value) => setState(() => lname = value ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return "Please enter your last name";
+        }
+        return null;
+      },
+    )
+  );
 
   Widget get passwordField => Padding(
         padding: const EdgeInsets.only(bottom: 30),
@@ -67,7 +105,7 @@ class _SignUpState extends State<SignUpPage> {
           obscureText: true,
           onSaved: (value) => setState(() => password = value),
           validator: (value) {
-            if (value == null || value.isEmpty) {
+            if (value == null || value.isEmpty || value.length<6) {
               return "Please enter a valid password";
             }
             return null;
@@ -82,7 +120,7 @@ class _SignUpState extends State<SignUpPage> {
           await context
               .read<UserAuthProvider>()
               .authService
-              .signUp(email!, password!);
+              .signUp(email!, password!, fname!, lname!);
 
           // check if the widget hasn't been disposed of after an asynchronous action
           if (mounted) Navigator.pop(context);
