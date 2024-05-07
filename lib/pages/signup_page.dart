@@ -101,7 +101,7 @@ class _SignUpState extends State<SignUpPage> {
           decoration: const InputDecoration(
               border: OutlineInputBorder(),
               label: Text("Password"),
-              hintText: "At least 8 characters"),
+              hintText: "At least 6 characters"),
           obscureText: true,
           onSaved: (value) => setState(() => password = value),
           validator: (value) {
